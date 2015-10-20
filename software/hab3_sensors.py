@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from sense_hat import sense_hat
+from sense_hat import SenseHat
 import csv
 import time
 import picamera
@@ -21,4 +21,9 @@ with open('sensor-data.csv','w', newline='') as f:
             cur_time = time.strftime("%H:%M:%S",time.gmtime())
             writer.writerow([cur_time,temp,pressure,humidity])
             time.sleep(10.00 - ((time.time() - startloop) % 10.00))
+
+        # with picamera.PiCamera() as camera:
+        #     camera.resolution = (1920, 1080)
+        #     camera.start_preview()
+        #     camera.capture()
 
