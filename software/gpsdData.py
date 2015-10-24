@@ -27,7 +27,7 @@ class GpsPoller(threading.Thread):
 			gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
 
 # Open csv file for writing GPS data
-with open('gps-data.csv','w',newline='') as f:
+with open('gps-data.csv','w') as f:
 	writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
 	#loop_ref_time = time.time()
 
