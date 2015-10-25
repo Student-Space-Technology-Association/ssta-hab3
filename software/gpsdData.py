@@ -8,6 +8,7 @@ from time import *
 import time
 import threading
 import csv
+import datetime
 
 gpsd = None #seting the global variable
 
@@ -60,7 +61,7 @@ with open('gps-data.csv','w') as f:
 				print 'sats        ' , gpsd.satellites
 
 				writer.writerow([gpsd.utc,gpsd.fix.latitude,gpsd.fix.longitude,gpsd.fix.altitude,gpsd.fix.speed,gpsd.fix.climb,gpsd.fix.track])
-
+				print 'Time is ' datetime.datetime.now().strftime("%H:%M:%S.%f")
 				time.sleep(5) #set to whatever
 
 		except (KeyboardInterrupt, SystemExit): #when you press ctrl+c
