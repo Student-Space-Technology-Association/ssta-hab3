@@ -60,7 +60,7 @@ if __name__ == '__main__':
 			with open('gps-data.csv','a') as f:
 				writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
 				writer.writerow([gpsd.utc,gpsd.fix.latitude,gpsd.fix.longitude,gpsd.fix.altitude,gpsd.fix.speed,gpsd.fix.climb,gpsd.fix.track])
-				print 'Writing csv at ' datetime.datetime.now().strftime("%H:%M:%S.%f")
+				print 'Writing csv at ' , datetime.datetime.now().strftime("%H:%M:%S.%f")
 			time.sleep(5) #set to whatever
 
 	except (KeyboardInterrupt, SystemExit): #when you press ctrl+c
