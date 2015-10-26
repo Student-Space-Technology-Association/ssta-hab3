@@ -27,45 +27,44 @@ class GpsPoller(threading.Thread):
 		while gpsp.running:
 			gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
 
-# Open csv file for writing GPS data
-with open('gps-data.csv','w') as f:
-	writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
-	#loop_ref_time = time.time()
 
-	if __name__ == '__main__':
-		gpsp = GpsPoller() # create the thread
-		try:
-			gpsp.start() # start it up
-			while True:
-				#It may take a second or two to get good data
-				#print gpsd.fix.latitude,', ',gpsd.fix.longitude,'	Time: ',gpsd.utc
+if __name__ == '__main__':
+	gpsp = GpsPoller() # create the thread
+	try:
+		gpsp.start() # start it up
+		while True:
+			#It may take a second or two to get good data
+			#print gpsd.fix.latitude,', ',gpsd.fix.longitude,'	Time: ',gpsd.utc
 
-				os.system('clear')
+			os.system('clear')
 
-				print
-				print ' GPS reading'
-				print '----------------------------------------'
-				print 'latitude    ' , gpsd.fix.latitude
-				print 'longitude   ' , gpsd.fix.longitude
-				print 'time utc    ' , gpsd.utc,' + ', gpsd.fix.time
-				print 'altitude (m)' , gpsd.fix.altitude
-				print 'eps         ' , gpsd.fix.eps
-				print 'epx         ' , gpsd.fix.epx
-				print 'epv         ' , gpsd.fix.epv
-				print 'ept         ' , gpsd.fix.ept
-				print 'speed (m/s) ' , gpsd.fix.speed
-				print 'climb       ' , gpsd.fix.climb
-				print 'track       ' , gpsd.fix.track
-				print 'mode        ' , gpsd.fix.mode
-				print
-				print 'sats        ' , gpsd.satellites
+			print
+			print ' GPS reading'
+			print '----------------------------------------'
+			print 'latitude    ' , gpsd.fix.latitude
+			print 'longitude   ' , gpsd.fix.longitude
+			print 'time utc    ' , gpsd.utc,' + ', gpsd.fix.time
+			print 'altitude (m)' , gpsd.fix.altitude
+			print 'eps         ' , gpsd.fix.eps
+			print 'epx         ' , gpsd.fix.epx
+			print 'epv         ' , gpsd.fix.epv
+			print 'ept         ' , gpsd.fix.ept
+			print 'speed (m/s) ' , gpsd.fix.speed
+			print 'climb       ' , gpsd.fix.climb
+			print 'track       ' , gpsd.fix.track
+			print 'mode        ' , gpsd.fix.mode
+			print
+			print 'sats        ' , gpsd.satellites
 
+			# Open csv file for writing GPS data
+			with open('gps-data.csv','a') as f:
+				writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
 				writer.writerow([gpsd.utc,gpsd.fix.latitude,gpsd.fix.longitude,gpsd.fix.altitude,gpsd.fix.speed,gpsd.fix.climb,gpsd.fix.track])
-				print 'Time is ' datetime.datetime.now().strftime("%H:%M:%S.%f")
-				time.sleep(5) #set to whatever
+				print 'Writing csv at ' datetime.datetime.now().strftime("%H:%M:%S.%f")
+			time.sleep(5) #set to whatever
 
-		except (KeyboardInterrupt, SystemExit): #when you press ctrl+c
-			print "\nKilling Thread..."
-			gpsp.running = False
-			gpsp.join() # wait for the thread to finish what it's doing
-		print "Done.\nExiting."
+	except (KeyboardInterrupt, SystemExit): #when you press ctrl+c
+		print "\nKilling Thread..."
+		gpsp.running = False
+		gpsp.join() # wait for the thread to finish what it's doing
+	print "Done.\nExiting."
