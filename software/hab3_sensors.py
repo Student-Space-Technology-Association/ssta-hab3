@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# Data collection for SenseHat sensors (temperature, pressure, humidity)
+
 from sense_hat import SenseHat
 import csv
 import time
@@ -7,7 +9,8 @@ import datetime
 
 sense = SenseHat()
 
-with open('sensor-data.csv','w', newline='') as f:
+csvfilename = time.strftime("%Y%m%d-%H%M%S",time.gmtime())
+with open("sensehat_" + csvfilename + '.csv','w', newline='') as f:
     writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
     startloop = time.time()
 
