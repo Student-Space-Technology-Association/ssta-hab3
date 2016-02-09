@@ -46,10 +46,12 @@ while True:
         raw_bmp_info += ser.read(1)
     raw_bmp_info = raw_bmp_info.split(',')
 
+    # Write Sensehat data to csv
     with open("sensehat_" + csvfilename + '.csv','a', newline='') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([current_time,temp,pressure,humidity])
 
+    # Write BMP180 data to csv
     with open("bmp180_" + csvfilename + '.csv','a', newline='') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([raw_bmp_info[0],raw_bmp_info[1]])
