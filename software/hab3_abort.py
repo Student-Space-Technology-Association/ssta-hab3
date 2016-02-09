@@ -6,7 +6,7 @@
 import RPi.GPIO as GPIO
 import sys
 
-# Pick a GPIO pin to connect to the cutdown device
+# Pick a GPIO pin to connect to the transistor activating the cutdown device
 abort_pin = 23
 
 # Setup GPIO as output
