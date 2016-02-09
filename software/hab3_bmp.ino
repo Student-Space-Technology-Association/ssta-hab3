@@ -1,3 +1,6 @@
+// Inspired by Sparkfun's example code
+
+
 #include <SFE_BMP180.h>
 #include <Wire.h>
 
@@ -19,8 +22,7 @@ void setup()
   else
   {
     // Oops, something went wrong, this is usually a connection problem,
-    // see the comments at the top of this sketch for the proper connections.
-
+   
     Serial.println("BMP180 init fail (disconnected?)\n\n");
     while(1); // Pause forever.
   }
@@ -42,7 +44,7 @@ void loop()
     inByte=Serial.read();
   {//  if(inByte == 'a'){
       P = getPressure();
-      // Show the relative altitude difference between
+      // Show the relative altitude difference (in feet) between
       // the new reading and the baseline reading:
       a = pressure.altitude(P,baseline);
       Serial.print(a*3.28084);
