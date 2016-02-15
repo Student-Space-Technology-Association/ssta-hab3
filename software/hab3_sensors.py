@@ -37,38 +37,38 @@ while True:
 
 
     ## Orientation
-    sense.set_imu_config(True,True,True)        # Enable compass, gyro, and accelerometer
+    sense.set_imu_config(True,True,True)        # Enable ompass, gyro, and accelerometer
     SH_orientation = sense.get_orientation()    # orientation of pitch, roll, yaw axes in degrees
-    SH_orientation_x = SH_orientation['x']
-    SH_orientation_y = SH_orientation['y']
-    SH_orientation_z = SH_orientation['z']
+    SH_orientation_x = SH_orientation.get('x')
+    SH_orientation_y = SH_orientation.get('y')
+    SH_orientation_z = SH_orientation.get('z')
 
     # Magnetometer data
     sense.set_imu_config(True,False,False)
     time.sleep(0.01) # sleep for 10 ms after changing configuration
     SH_compass_north = sense.get_compass()      # direction of magnetometer from North, in degrees
     SH_compass_raw = sense.get_compass_raw()    # magnetic intensity of x, y, z axes in microteslas
-    SH_compass_raw_x = SH_compass_raw['x']
-    SH_compass_raw_y = SH_compass_raw['y']
-    SH_compass_raw_z = SH_compass_raw['z']
+    SH_compass_raw_x = SH_compass_raw.get('x')
+    SH_compass_raw_y = SH_compass_raw.get('y')
+    SH_compass_raw_z = SH_compass_raw.get('z')
 
     # Gyro Data
     sense.set_imu_config(False,True,False)
     time.sleep(0.01) # sleep for 10 ms after changing configuration
     #SH_gyro = sense.get_gyroscope()             # orientation of pitch, roll, yaw axes in degrees
     SH_gyro_raw = sense.get_gyroscope_raw()     # rotational velocity of pitch, roll, yaw axes in radians per sec
-    SH_gyro_raw_x = SH_gyro_raw['x']
-    SH_gyro_raw_y = SH_gyro_raw['y']
-    SH_gyro_raw_z = SH_gyro_raw['z']
+    SH_gyro_raw_x = SH_gyro_raw.get('x')
+    SH_gyro_raw_y = SH_gyro_raw.get('y')
+    SH_gyro_raw_z = SH_gyro_raw.get('z')
 
     # Accelerometer data
     sense.set_imu_config(False,False,True)
     time.sleep(0.01) # sleep for 10 ms after changing configuration
     #SH_accel = sense.get_accelerometer()        # orientation of pitch, roll, yaw axes in degrees
     SH_accel_raw = sense.get_accelerometer_raw()    # acceleration intensity of pitch, roll, yaw axes in 'G's
-    SH_accel_raw_x = SH_accel_raw['x']
-    SH_accel_raw_y = SH_accel_raw['y']
-    SH_accel_raw_z = SH_accel_raw['z']
+    SH_accel_raw_x = SH_accel_raw.get('x')
+    SH_accel_raw_y = SH_accel_raw.get('y')
+    SH_accel_raw_z = SH_accel_raw.get('z')
 
     ## Readings from the BMP180 installed in the sealed box
     BMP_pressure = BMP_sensor.read_pressure()   # value in Pascals
