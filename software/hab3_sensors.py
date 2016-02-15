@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 # Data collection for R.Pi SenseHat sensors (temperature, pressure, humidity)
 # High Altitude Balloon, Series 3 (HAB3)
@@ -66,12 +66,12 @@ while True:
 
 
     # Write environment sensor data to csv
-    with open("environment_data_" + csvfilename + '.csv','a', newline='') as f:
+    with open("environment_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,SH_temp,BMP_temp,SH_pressure,BMP_pressure,BMP_alt,SH_humidity])
 
     # Write orientation sensor data to csv
-    with open("orientation_data_" + csvfilename + '.csv','a', newline='') as f:
+    with open("orientation_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,SH_orientation['x'],SH_orientation['y'],SH_orientation['z'],SH_compass_north,SH_compass_raw['x'],SH_compass_raw['y'],SH_compass_raw['z'],SH_gyro_raw['x'],SH_gyro_raw['y'],SH_gyro_raw['z'],SH_accel_raw['x'],SH_accel_raw['y'],SH_accel_raw['z']])
 
