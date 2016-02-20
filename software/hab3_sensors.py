@@ -29,6 +29,15 @@ sense = SenseHat()
 BMP_sensor = BMP085.BMP085()
 adc = ADS1x15(ic=ADS1015)
 
+# Set up serial port
+ser = serial.Serial(
+    port='/dev/ttyAMA0',
+    baudrate=115200,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+    bytesize=serial.EIGHTBITS,
+)
+
 # Record to a new file each time the script runs
 csvfilename = time.strftime("%Y%m%d-%H%M%S",time.gmtime())
 
@@ -127,6 +136,9 @@ while True:
     with open("bus_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
+
+    ser.write('BusBat')
+    ser.write(bus_bat)
 
 
 
