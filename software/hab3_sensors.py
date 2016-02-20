@@ -9,11 +9,24 @@ from sense_hat import SenseHat
 import csv
 import time
 import Adafruit_BMP.BMP085 as BMP085
+import signal, sys
+from Adafruit_ADS1x15 import ADS1x15
+
+def signal_handler(signal, frame):
+        print 'You pressed Ctrl+C!'
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
+
+# ADC setup
+ADS1015 = 0x00  # 12-bit ADC
+gain = 4096     # gain setting for +/- 4.096V
+sps = 250       # 250 samples per second
 
 
 # Create instances
 sense = SenseHat()
 BMP_sensor = BMP085.BMP085()
+adc = ADS1x15(ic=ADS1015)
 
 # Record to a new file each time the script runs
 csvfilename = time.strftime("%Y%m%d-%H%M%S",time.gmtime())
@@ -76,6 +89,14 @@ while True:
     BMP_temp = BMP_sensor.read_temperature()    # value in degrees C
 
 
+    ## Readings from the ADC to monitor battery and bus voltages
+    bus_bat = (adc.readADCSingleEnded(0, gain, sps) / 1000) * (3)
+    bus_a = (adc.readADCSingleEnded(1, gain, sps) / 1000) * (3)
+    bus_b = (adc.readADCSingleEnded(2, gain, sps) / 1000) * (3)
+    bus_c = (adc.readADCSingleEnded(3, gain, sps) / 1000) * (3)
+
+
+
     # Write environment sensor data to csv
     with open("environment_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
@@ -85,7 +106,11 @@ while True:
     with open("orientation_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,SH_orientation_x,SH_orientation_y,SH_orientation_z,SH_compass_north,SH_compass_raw_x,SH_compass_raw_y,SH_compass_raw_z,SH_gyro_raw_x,SH_gyro_raw_y,SH_gyro_raw_z,SH_accel_raw_x,SH_accel_raw_y,SH_accel_raw_z])
-
+    
+    # Write voltage data from ADC to csv
+    with open("bus_data_" + csvfilename + '.csv','a') as f:
+        writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
 
 
 
