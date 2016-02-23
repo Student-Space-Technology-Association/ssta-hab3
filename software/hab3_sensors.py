@@ -121,7 +121,7 @@ while True:
     # Write orientation sensor data to csv
     with open("orientation_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
-        writer.writerow([data_time,SH_orientation_x,SH_orientation_y,SH_orientation_z,SH_compass_north,SH_compass_raw_x,SH_compass_raw_y,SH_compass_raw_z,SH_gyro_raw_x,SH_gyro_raw_y,SH_gyro_raw_z,SH_accel_raw_x,SH_accel_raw_y,SH_accel_raw_z])
+        writer.writerow([data_time,SH_orientation.get('x'),SH_orientation_y,SH_orientation_z,SH_compass_north,SH_compass_raw_x,SH_compass_raw_y,SH_compass_raw_z,SH_gyro_raw_x,SH_gyro_raw_y,SH_gyro_raw_z,SH_accel_raw_x,SH_accel_raw_y,SH_accel_raw_z])
     
     # Write voltage data from ADC to csv
     with open("bus_data_" + csvfilename + '.csv','a') as f:
