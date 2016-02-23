@@ -11,7 +11,6 @@ import time
 import Adafruit_BMP.BMP085 as BMP085
 import signal, sys
 from Adafruit_ADS1x15 import ADS1x15
-import serial
 
 def signal_handler(signal, frame):
         print 'You pressed Ctrl+C!'
@@ -29,14 +28,6 @@ sense = SenseHat()
 BMP_sensor = BMP085.BMP085()
 adc = ADS1x15(ic=ADS1015)
 
-# Set up serial port
-ser = serial.Serial(
-    port='/dev/ttyAMA0',
-    baudrate=115200,
-    parity=serial.PARITY_NONE,
-    stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS,
-)
 
 # Record to a new file each time the script runs
 csvfilename = time.strftime("%Y%m%d-%H%M%S",time.gmtime())
@@ -137,8 +128,24 @@ while True:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
 
-    ser.write('BusBat')
-    ser.write(bus_bat)
+    # Print data to terminal for archiving over remote shell
+    print('======================================')
+    print('Time is: '),data_time
+    print('--------------------------------------')
+    print('Bus Bat (V): '),bus_bat
+    print('Bus A (V):   '),bus_a
+    print('Bus B (V):   '),bus_b
+    print('--------------------------------------')
+    print('SenseHat temperature: '),SH_temp
+    print('SenseHat pressure:    '),SH_pressure
+    print('SenseHat humidity:    '),SH_humidity
+    print('--------------------------------------')
+    print('Pitch (degrees):  '),SH_orientation.get('x')
+    print('Roll (degrees):   '),SH_orientation.get('y')
+    print('Yaw (degrees):    '),SH_orientation.get('z')
+    print('--------------------------------------')
+    
+
 
 
 
