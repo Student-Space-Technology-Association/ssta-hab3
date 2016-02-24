@@ -52,7 +52,8 @@ loop_interval = 10
 
 # Set a lower limit on altitude to activate "finding aids" (smoke and buzzer) on descent
 altitude_limit = 3048 # meters
-BMP_alt = 196 # set initial altitude to elevation in Franklin, TN launch location
+BMP_alt = 0 # initialize
+finding_activated = 0
 
 # Set a reference time at startup for calculating sleep duration in main loop
 ref_time = time.time()
