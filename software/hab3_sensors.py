@@ -35,15 +35,15 @@ csvfilename = time.strftime("%Y%m%d-%H%M%S",time.gmtime())
 # Create CSV files for data recording and write header rows
 with open("environment_data_" + csvfilename + '.csv','w') as f:
     writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(['Time','SenseHat Temperature (C)','BMP Temperature (C)','SenseHat Pressure (Pa)','BMP Pressure (Pa)','BMP Altitude (m)','SenseHat Humidity (rel. %)'])
+    writer.writerow(['Time','SenseHat Temperature (°C)','BMP Temperature (°C)','SenseHat Pressure (Pa)','BMP Pressure (Pa)','BMP Altitude (m)','SenseHat Humidity (rel. %)'])
 
 with open("bus_data_" + csvfilename + '.csv','w') as f:
     writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Time','Battery Voltage (V)','Bus A Voltage (V)','Bus B Voltage (V)','Bus C Voltage'])
 
-# with open("orientation_data_" + csvfilename + '.csv','a') as f:
-#     writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
-#     writer.writerow([data_time,SH_orientation_x,SH_orientation_y,SH_orientation_z,SH_compass_north,SH_compass_raw_x,SH_compass_raw_y,SH_compass_raw_z,SH_gyro_raw_x,SH_gyro_raw_y,SH_gyro_raw_z,SH_accel_raw_x,SH_accel_raw_y,SH_accel_raw_z])
+with open("orientation_data_" + csvfilename + '.csv','a') as f:
+    writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(['Time','Orientation/Pitch (deg)','Orientation/Roll (deg)','Orientation/Yaw (deg)','Direction to Compass North (deg)','Magnetic Intensity/x (uT)','Magnetic Intensity/y (uT)','Magnetic Intensity/z (uT)','Rot. Velocity/x (rad/s)','Rot. Velocity/y (rad/s)','Rot. Velocity/z (rad/s)','Acceleration/x (g)','Acceleration/y (g)','Acceleration/z (g)'])
 
 
 # Set a repeat interval for the main loop, in seconds
@@ -112,7 +112,6 @@ while True:
     bus_c = (adc.readADCSingleEnded(3, gain, sps) / 1000) * (3)
 
 
-
     # Write environment sensor data to csv
     with open("environment_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
@@ -129,33 +128,36 @@ while True:
         writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
 
     # Print data to terminal for archiving over remote shell
-    print('======================================')
+    print('===========================================')
     print('Time is: '),data_time
-    print('--------------------------------------')
+    print('-------------------------------------------')
     print('Bus Bat (V): '),bus_bat
     print('Bus A (V):   '),bus_a
     print('Bus B (V):   '),bus_b
-    print('--------------------------------------')
-    print('SenseHat temperature: '),SH_temp
-    print('SenseHat pressure:    '),SH_pressure
-    print('SenseHat humidity:    '),SH_humidity
+    print('-------------------------------------------')
+    print('SenseHat temperature (°C):  '),SH_temp
+    print('BMP180 temperature (°C):    '),BMP_temp
+    print('SenseHat pressure (Pa):     '),SH_pressure
+    print('BMP180 pressure (Pa):       '),BMP_pressure
+    print('BMP180 altitude (m):        '),BMP_alt
+    print('SenseHat rel. humidity (%): '),SH_humidity
     print('--------------------------------------')
     print('Pitch (degrees):  '),SH_orientation.get('x')
     print('Roll (degrees):   '),SH_orientation.get('y')
     print('Yaw (degrees):    '),SH_orientation.get('z')
-    print('--------------------------------------')
-    
+    # print('-------------------------------------------')
+    # print('Direction to compass north (degrees):    '),SH_compass_north
+    # print('Magnetic intensity, x axis (uT):    '),SH_compass_raw_x
+    # print('Magnetic intensity, y axis (uT):    '),SH_compass_raw_y
+    # print('Magnetic intensity, z axis (uT):    '),SH_compass_raw_z
+    print('-------------------------------------------')
+    print('Rotat. velocity, x axis (rad/s):   '),SH_gyro_raw_x
+    print('Rotat. velocity, y axis (rad/s):   '),SH_gyro_raw_y
+    print('Rotat. velocity, z axis (rad/s):   '),SH_gyro_raw_z
 
 
-
-
-
-
-
-
-
-
-    cur_time = time.time() # Update the 'current time'
+    # Timekeeping for the loop
+    cur_time = time.time() # Update the 'current time' after finishing all tasks
 
     # Subtract the elapsed time from 'loop_interval' to make each reading happens every 'loop_interval' seconds
     # Note: cur_time - ref_time is the elapsed time and will be extremely small.
