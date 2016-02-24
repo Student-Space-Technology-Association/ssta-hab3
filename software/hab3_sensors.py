@@ -50,8 +50,9 @@ with open("orientation_data_" + csvfilename + '.csv','a') as f:
 # Set a repeat interval for the main loop, in seconds
 loop_interval = 10
 
-# Set a lower limit on altitude to activate "finding aids" on descent
+# Set a lower limit on altitude to activate "finding aids" (smoke and buzzer) on descent
 altitude_limit = 3048 # meters
+BMP_alt = 196 # set initial altitude to elevation in Franklin, TN launch location
 
 # Set a reference time at startup for calculating sleep duration in main loop
 ref_time = time.time()
