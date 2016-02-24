@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 # Data monitoring and recording for Raspberry Pi 2 sensors
 # High Altitude Balloon, Series 3 (HAB3)
