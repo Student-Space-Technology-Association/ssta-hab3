@@ -49,6 +49,9 @@ with open("orientation_data_" + csvfilename + '.csv','a') as f:
 # Set a repeat interval for the main loop, in seconds
 loop_interval = 10
 
+# Set a lower limit on altitude to activate "finding aids" on descent
+altitude_limit = 3048 # meters
+
 # Set a reference time at startup for calculating sleep duration in main loop
 ref_time = time.time()
 
@@ -101,8 +104,19 @@ while True:
 
     ## Readings from the BMP180 installed in the sealed box
     BMP_pressure = BMP_sensor.read_pressure()   # value in Pascals
-    BMP_alt = BMP_sensor.read_altitude()        # value in meters
     BMP_temp = BMP_sensor.read_temperature()    # value in degrees C
+
+    # Altitude readings
+    BMP_prev = BMP_alt
+    BMP_alt = BMP_sensor.read_altitude()        # value in meters
+
+    # Check if it's time to activate "finding aids"
+    if BMP_alt < altitude_limit:
+        if BMP_alt < BMP_prev: # check to see if we are descending
+            if finding_activated < 1:
+                print 'Activate the smoke grenade'
+                print 'Activate the buzzer'
+                activated = 1
 
 
     ## Readings from the ADC to monitor battery and bus voltages
