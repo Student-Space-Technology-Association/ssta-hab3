@@ -38,7 +38,7 @@ with open("environment_data_" + csvfilename + '.csv','w') as f:
     writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Time','SenseHat Temperature (°C)','BMP Temperature (°C)','SenseHat Pressure (Pa)','BMP Pressure (Pa)','BMP Altitude (m)','SenseHat Humidity (rel. %)'])
 
-with open("bus_data_" + csvfilename + '.csv','w') as f:
+with open("voltage_data" + csvfilename + '.csv','w') as f:
     writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Time','Battery Voltage (V)','Bus A Voltage (V)','Bus B Voltage (V)','Bus C Voltage'])
 
@@ -50,10 +50,11 @@ with open("orientation_data_" + csvfilename + '.csv','a') as f:
 # Set a repeat interval for the main loop, in seconds
 loop_interval = 10
 
-# Set a lower limit on altitude to activate "finding aids" (smoke and buzzer) on descent
+# Set a lower limit on altitude to activate "finding aids" (smoke grenade and buzzer) on descent
 altitude_limit = 3048 # meters
 BMP_alt = 0 # initialize
 finding_activated = 0
+activated = 0
 
 # Set a reference time at startup for calculating sleep duration in main loop
 ref_time = time.time()
@@ -110,16 +111,8 @@ while True:
     BMP_temp = BMP_sensor.read_temperature()    # value in degrees C
 
     # Altitude readings
-    BMP_prev = BMP_alt
+    BMP_prev_alt = BMP_alt # keep the previous altitude reading for comparison later
     BMP_alt = BMP_sensor.read_altitude()        # value in meters
-
-    # Check if it's time to activate "finding aids"
-    if BMP_alt < altitude_limit:
-        if BMP_alt < BMP_prev: # check to see if we are descending
-            if finding_activated < 1:
-                print 'Activate the smoke grenade'
-                print 'Activate the buzzer'
-                activated = 1
 
 
     ## Readings from the ADC to monitor battery and bus voltages
@@ -140,7 +133,7 @@ while True:
         writer.writerow([data_time,SH_orientation.get('x'),SH_orientation_y,SH_orientation_z,SH_compass_north,SH_compass_raw_x,SH_compass_raw_y,SH_compass_raw_z,SH_gyro_raw_x,SH_gyro_raw_y,SH_gyro_raw_z,SH_accel_raw_x,SH_accel_raw_y,SH_accel_raw_z])
     
     # Write voltage data from ADC to csv
-    with open("bus_data_" + csvfilename + '.csv','a') as f:
+    with open("voltage_data" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
 
@@ -171,9 +164,20 @@ while True:
     print('Rotat. velocity, x axis (rad/s):   '),SH_gyro_raw_x
     print('Rotat. velocity, y axis (rad/s):   '),SH_gyro_raw_y
     print('Rotat. velocity, z axis (rad/s):   '),SH_gyro_raw_z
+    print('===========================================')
 
 
-    # Timekeeping for the loop
+    ## Check if it's time to activate smoke grenade and buzzer
+    if BMP_alt < altitude_limit:
+        if BMP_alt < BMP_prev_alt: # check to see if we are descending; BMP_prev_alt should < than altitude_limit
+            if finding_activated < 1:
+                activated = 1
+                print 'Smoke grenade has been activated.'
+                print 'Buzzer has been activated.'
+
+
+
+    ## Timekeeping for the loop
     cur_time = time.time() # Update the 'current time' after finishing all tasks
 
     # Subtract the elapsed time from 'loop_interval' to make each reading happens every 'loop_interval' seconds
