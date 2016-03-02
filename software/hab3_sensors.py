@@ -12,22 +12,38 @@ import time
 import Adafruit_BMP.BMP085 as BMP085
 import signal, sys
 from Adafruit_ADS1x15 import ADS1x15
+import RPi.GPIO as GPIO
 
 def signal_handler(signal, frame):
         print 'You pressed Ctrl+C!'
         sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
+
 # ADC setup
 ADS1015 = 0x00  # 12-bit ADC
-gain = 4096     # gain setting for +/- 4.096V
+gain = 4096     # gain setting for +/- 4.096V range
 sps = 250       # 250 samples per second
+
+# Servo and buzzer setup
+GPIO.setmode(GPIO.BCM)
+servo_pin = 18
+buzzer_pin = 24
+GPIO.setup(servo_pin,GPIO.OUT)
+GPIO.setup(buzzer_pin,GPIO.OUT)
+GPIO.output(buzzer_pin,GPIO.LOW)
 
 
 # Create instances
 sense = SenseHat()
 BMP_sensor = BMP085.BMP085()
 adc = ADS1x15(ic=ADS1015)
+pwm = GPIO.PWM(servo_pin,50)
+
+# Finish servo setup
+servo_start = 3.5   # percent duty cycle for initial servo position
+servo_smoke = 7.5   # servo position to activate smoke
+
 
 
 # Record to a new file each time the script runs
@@ -55,6 +71,9 @@ altitude_limit = 3048 # meters
 BMP_alt = 0 # initialize
 finding_activated = 0
 activated = 0
+
+# Set smoke grenade servo to initial position
+pwm.start(servo_start)
 
 # Set a reference time at startup for calculating sleep duration in main loop
 ref_time = time.time()
@@ -116,10 +135,10 @@ while True:
 
 
     ## Readings from the ADC to monitor battery and bus voltages
-    bus_bat = (adc.readADCSingleEnded(0, gain, sps) / 1000) * (3)
-    bus_a = (adc.readADCSingleEnded(1, gain, sps) / 1000) * (3)
-    bus_b = (adc.readADCSingleEnded(2, gain, sps) / 1000) * (3)
-    bus_c = (adc.readADCSingleEnded(3, gain, sps) / 1000) * (3)
+    bus_bat = (adc.readADCSingleEnded(3, gain, sps) / 1000) * (3)
+    bus_a = (adc.readADCSingleEnded(0, gain, sps) / 1000) * (3)
+    bus_b = (adc.readADCSingleEnded(1, gain, sps) / 1000) * (3)
+    bus_c = (adc.readADCSingleEnded(2, gain, sps) / 1000) * (3)
 
 
     # Write environment sensor data to csv
@@ -164,6 +183,8 @@ while True:
     print('Rotat. velocity, x axis (rad/s):   '),SH_gyro_raw_x
     print('Rotat. velocity, y axis (rad/s):   '),SH_gyro_raw_y
     print('Rotat. velocity, z axis (rad/s):   '),SH_gyro_raw_z
+    print('-------------------------------------------')
+    print('Buzzer and smoke grenade activation status = '),activated
     print('===========================================')
 
 
@@ -171,9 +192,11 @@ while True:
     if BMP_alt < altitude_limit:
         if BMP_alt < BMP_prev_alt: # check to see if we are descending; BMP_prev_alt should < than altitude_limit
             if finding_activated < 1:
-                activated = 1
-                print 'Smoke grenade has been activated.'
+                GPIO.output(buzzer_pin,GPIO.HIGH)
                 print 'Buzzer has been activated.'
+                pwm.ChangeDutyCycle(servo_smoke)
+                print 'Smoke grenade has been activated.'
+                activated = 1
 
 
 
