@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+# Startup script to change GPS mode from binary SiRF to NMEA
+
+# Check dmesg for pl2303 usb-to-serial
+# 
+
+killall gpsd
+rm /var/run/gpsd.sock
+gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
+# Change GPS to NMEA mode
+gpsctl -n /dev/ttyUSB0
