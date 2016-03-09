@@ -171,9 +171,9 @@ while True:
     print('BMP180 altitude (m):        '),BMP_alt
     print('SenseHat rel. humidity (%): '),SH_humidity
     print('--------------------------------------')
-    print('Pitch (degrees):  '),SH_orientation.get('x')
-    print('Roll (degrees):   '),SH_orientation.get('y')
-    print('Yaw (degrees):    '),SH_orientation.get('z')
+    print('Pitch (degrees):  '),SH_orientation_x
+    print('Roll (degrees):   '),SH_orientation_y
+    print('Yaw (degrees):    '),SH_orientation_z
     # print('-------------------------------------------')
     # print('Direction to compass north (degrees):    '),SH_compass_north
     # print('Magnetic intensity, x axis (uT):    '),SH_compass_raw_x
