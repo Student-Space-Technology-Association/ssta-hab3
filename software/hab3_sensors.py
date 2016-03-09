@@ -190,7 +190,7 @@ while True:
 
     ## Check if it's time to activate smoke grenade and buzzer
     if BMP_alt < altitude_limit:
-        if BMP_alt < BMP_prev_alt: # check to see if we are descending; BMP_prev_alt should < than altitude_limit
+        if (BMP_prev_alt - BMP_alt) > 2: # check to see if we are really descending (not measurement fluctuations)--at least 2 meter difference
             if finding_activated < 1:
                 GPIO.output(buzzer_pin,GPIO.HIGH)
                 print 'Buzzer has been activated.'
