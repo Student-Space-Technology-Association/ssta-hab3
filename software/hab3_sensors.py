@@ -29,7 +29,7 @@ sps = 250       # 250 samples per second
 # Servo and buzzer setup
 GPIO.setmode(GPIO.BCM)
 servo_pin = 18
-buzzer_pin = 24
+buzzer_pin = 25
 GPIO.setup(servo_pin,GPIO.OUT)
 GPIO.setup(buzzer_pin,GPIO.OUT)
 GPIO.output(buzzer_pin,GPIO.LOW)
