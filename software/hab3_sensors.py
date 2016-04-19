@@ -92,7 +92,7 @@ while True:
     SH_humidity = sense.get_humidity()          # % relative humidity
 
 
-    ## Orientation
+    # Orientation
     sense.set_imu_config(True,True,True)        # Enable ompass, gyro, and accelerometer
     SH_orientation = sense.get_orientation()    # orientation of pitch, roll, yaw axes in degrees
     SH_orientation_x = SH_orientation.get('x')
@@ -142,6 +142,8 @@ while True:
     bus_c = (adc.readADCSingleEnded(2, gain, sps) / 1000) * (3)
 
 
+    ## Write data to files
+
     # Write environment sensor data to csv
     with open("environment_data_" + csvfilename + '.csv','a') as f:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
@@ -157,7 +159,8 @@ while True:
         writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
         writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
 
-    # Print data to terminal for archiving over remote shell
+
+    # Print data to terminal
     print('===========================================')
     print('Time is: '),data_time
     print('-------------------------------------------')
@@ -165,16 +168,16 @@ while True:
     print('Bus A (V):   '),bus_a
     print('Bus B (V):   '),bus_b
     print('-------------------------------------------')
-    print('SenseHat temperature (°C):  '),SH_temp
-    print('BMP180 temperature (°C):    '),BMP_temp
+    print('SenseHat temp (°C):  '),SH_temp
+    print('BMP180 temp (°C):    '),BMP_temp
     print('SenseHat pressure (Pa):     '),SH_pressure
     print('BMP180 pressure (Pa):       '),BMP_pressure
-    print('BMP180 altitude (m):        '),BMP_alt
-    print('SenseHat rel. humidity (%): '),SH_humidity
+    print('BMP180 alt (m):        '),BMP_alt
+    print('SenseHat humidity (%): '),SH_humidity
     print('--------------------------------------')
-    print('Pitch (degrees):  '),SH_orientation_x
-    print('Roll (degrees):   '),SH_orientation_y
-    print('Yaw (degrees):    '),SH_orientation_z
+    print('Pitch (deg):  '),SH_orientation_x
+    print('Roll (deg):   '),SH_orientation_y
+    print('Yaw (deg):    '),SH_orientation_z
     # print('-------------------------------------------')
     # print('Direction to compass north (degrees):    '),SH_compass_north
     # print('Magnetic intensity, x axis (uT):    '),SH_compass_raw_x
@@ -185,7 +188,7 @@ while True:
     print('Rotat. velocity, y axis (rad/s):   '),SH_gyro_raw_y
     print('Rotat. velocity, z axis (rad/s):   '),SH_gyro_raw_z
     print('-------------------------------------------')
-    print('Buzzer and smoke grenade activation status = '),activated
+    print('Buzzer and smoke activation status = '),activated
     print('===========================================')
 
 
