@@ -167,13 +167,14 @@ while True:
     print('Bus Bat (V): '),bus_bat
     print('Bus A (V):   '),bus_a
     print('Bus B (V):   '),bus_b
+    print('Bus C (V):   '),bus_c
     print('-------------------------------------------')
-    print('SenseHat temp (°C):  '),SH_temp
-    print('BMP180 temp (°C):    '),BMP_temp
-    print('SenseHat pressure (Pa):     '),SH_pressure
-    print('BMP180 pressure (Pa):       '),BMP_pressure
-    print('BMP180 alt (m):        '),BMP_alt
-    print('SenseHat humidity (%): '),SH_humidity
+    print('SenseHat temp (°C):      '),SH_temp
+    print('BMP180 temp (°C):        '),BMP_temp
+    print('SenseHat pressure (Pa):  '),SH_pressure
+    print('BMP180 pressure (Pa):    '),BMP_pressure
+    print('BMP180 alt (m):          '),BMP_alt
+    print('SenseHat humidity (%):   '),SH_humidity
     print('--------------------------------------')
     print('Pitch (deg):  '),SH_orientation_x
     print('Roll (deg):   '),SH_orientation_y
