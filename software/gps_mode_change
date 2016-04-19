@@ -3,8 +3,8 @@
 # Startup script to change GPS from binary SiRF mode to NMEA mode
 
 # Check dmesg output to determine if pl2303 usb-to-serial device is present
-# If present, save device name to variable
-# Output from dmesg looks like:
+# If present, save device name
+# Output from dmesg looks like this:
 # [   23.553522] usb 1-1.2.2: pl2303 converter now attached to ttyUSB0
 
 gps_check = $(dmesg | grep pl2303)
