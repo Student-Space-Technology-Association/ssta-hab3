@@ -2,7 +2,7 @@ import time
 import picamera
 from fractions import Fraction
 
-imagedir = '/home/jbohling/'
+imagedir = '/home/pi/hab3-camera_data'
 
 with picamera.PiCamera() as camera:
     camera.resolution = (2592,1944)
