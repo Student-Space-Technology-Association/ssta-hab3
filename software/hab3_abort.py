@@ -24,5 +24,9 @@ if not abort_confirm or abort_confirm[0].lower() != 'y':
 
 # Activate the relay to cut the balloon shrouds
 GPIO.output(abort_pin, GPIO.HIGH)
+time.sleep(1) # Sleep for one second while nichrome heats up
 print('The HAB3 payload is falling now...goodbye.')
+
+# Exit
+GPIO.cleanup()
 sys.exit()
