@@ -2,19 +2,14 @@ import time
 import picamera
 from fractions import Fraction
 
-imagedir = '/home/pi/hab3-camera_data'
+imagedir = '/home/pi/hab3-camera_data/'
 
 with picamera.PiCamera() as camera:
+    vid_time=time.strftime("%H%M%S",time.gmtime())
     camera.resolution = (2592,1944)
-    
-    #camera.framerate = Fraction(1,6)
-    #camera.shutter_speed = 6000000
-    #camera.exposure_mode = 'off'
-    #camera.iso = 800
-
     camera.start_preview()
-    time.sleep(10)
-    
-    for filename in camera.capture_continuous(imagedir + 'hab3_img{timestamp:%Y%m%d-%H%M%S}.jpg'):
-        print('Captured %s' % filename)
-        time.sleep(300) # Wait 5 minutes
+    camera.start_recording(imagedir + 'hab3_video_' + vid_time + '.h264')
+    camera.wait_recording(15)
+    camera.capture(imagedir + 'hab3_img_' +vid_time + '.jpg', use_video_port=True)
+    camera.wait_recording(15)
+    camera.stop_recording()
