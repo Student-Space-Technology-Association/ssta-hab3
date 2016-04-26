@@ -8,7 +8,7 @@ imagedir = '/home/pi/hab3-camera_data/'
 
 with picamera.PiCamera() as camera:
     vid_time=time.strftime("%H%M%S",time.gmtime())
-    camera.resolution = (2592,1944)
+    camera.resolution = (1024,768)
     camera.start_preview()
     camera.start_recording(imagedir + 'hab3_video_' + vid_time + '.h264')
     camera.wait_recording(15)
