@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import time
 import picamera
 from fractions import Fraction
