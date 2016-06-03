@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+# Startup script to change GPS from binary SiRF mode to NMEA mode
+
+# Check dmesg output to determine if pl2303 usb-to-serial device is present
+# If present, save device name
+# Output from dmesg looks like this:
+# [   23.553522] usb 1-1.2.2: pl2303 converter now attached to ttyUSB0
+
+gps_check = $(dmesg | grep pl2303)
+gps_present = $?
+if [ gps_present = 0 ]
+then
+	
+	# Extract device name
+	gps_device = $(expr "$gps_check" : '.*\(ttyUSB[0-9]{1}\).*')
+	
+	# Restart 
+	killall gpsd
+	rm /var/run/gpsd.sock
+	gpsd /dev/"$gps_device" -F /var/run/gpsd.sock
+
+	# Change GPS to NMEA mode
+	gpsctl -n /dev/"$gps_device"
+	if [ $? = 0 ]
+	then
+		print "GPS device successfully switched to NMEA mode.\n"
+	else
+		print "Error: GPS device was not switched to NMEA mode.\n"
+	fi
+else
+	print "GPS device was not detected. Check if GPS is plugged in to USB hub.\n"
+fi
+
