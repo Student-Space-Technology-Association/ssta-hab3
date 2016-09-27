@@ -11,7 +11,7 @@ import csv
 import time
 import Adafruit_BMP.BMP085 as BMP085
 import signal, sys
-import Adafruit_ADS1x15
+from Adafruit_ADS1x15 import ADS1x15
 import RPi.GPIO as GPIO
 
 def signal_handler(signal, frame):
@@ -23,7 +23,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 
 # ADC setup
-#ADS1015 = 0x00  # 12-bit ADC
+ADS1015 = 0x00  # 12-bit ADC
 gain = 4096     # gain setting for +/- 4.096V range
 sps = 250       # 250 samples per second
 
@@ -39,7 +39,7 @@ GPIO.output(buzzer_pin,GPIO.LOW)
 # Create instances
 sense = SenseHat()
 BMP_sensor = BMP085.BMP085()
-adc = Adafruit_ADS1x15.ADS1015()
+adc = ADS1x15(ic=ADS1015)
 pwm = GPIO.PWM(servo_pin,50)
 
 # Finish servo setup
