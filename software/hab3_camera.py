@@ -1,3 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# Image capture using Raspberry Pi camera module
+
 import time
 import picamera
 from fractions import Fraction
