@@ -161,6 +161,18 @@ while True:
         writer.writerow([data_time,bus_bat,bus_a,bus_b,bus_c])
 
 
+    ## Check if it's time to activate smoke grenade and buzzer
+    if BMP_alt < altitude_limit:
+        if (BMP_prev_alt - BMP_alt) > 2: # check to see if we are really descending (not measurement fluctuations)--at least 2 meter difference
+            if finding_activated < 1:
+                GPIO.output(buzzer_pin,GPIO.HIGH)
+                print 'Buzzer has been activated.'
+                pwm.ChangeDutyCycle(servo_smoke)
+                print 'Smoke grenade has been activated.'
+                activated = 1
+
+
+
     # Print data to terminal
     print('===========================================')
     print('Time is: '),data_time
@@ -192,19 +204,6 @@ while True:
     print('-------------------------------------------')
     print('Buzzer and smoke activation status = '),activated
     print('===========================================')
-
-
-    ## Check if it's time to activate smoke grenade and buzzer
-    if BMP_alt < altitude_limit:
-        if (BMP_prev_alt - BMP_alt) > 2: # check to see if we are really descending (not measurement fluctuations)--at least 2 meter difference
-            if finding_activated < 1:
-                GPIO.output(buzzer_pin,GPIO.HIGH)
-                print 'Buzzer has been activated.'
-                pwm.ChangeDutyCycle(servo_smoke)
-                print 'Smoke grenade has been activated.'
-                activated = 1
-
-
 
     ## Timekeeping for the loop
     cur_time = time.time() # Update the 'current time' after finishing all tasks
