@@ -1,6 +1,7 @@
 import time
 import picamera
 from fractions import Fraction
+import signal,sys
 
 def signal_handler(signal, frame):
         print 'You pressed Ctrl+C!'
