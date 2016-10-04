@@ -1,0 +1,7 @@
+After booting the Pi and logging in, run these commands before starting the hab3_gps.py script:
+
+sudo killall gpsd
+sudo rm /var/run/gpsd.sock
+sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
+sudo gpsctl -n /dev/ttyUSB0
+
