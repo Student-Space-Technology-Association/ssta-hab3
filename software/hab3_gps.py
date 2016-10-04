@@ -1,7 +1,8 @@
 #! /usr/bin/python
-# Written by Dan Mandle http://dan.mandle.me September 2012
+# Framework written by Dan Mandle http://dan.mandle.me September 2012
 # License: GPL 2.0
 
+# Modules
 import os
 from gps import *
 from time import *
@@ -10,7 +11,11 @@ import threading
 import csv
 import datetime
 
-gpsd = None #seting the global variable
+gps_data_dir = '/home/pi/hab3_gps/'
+# Create a new csv file each time the script runs
+csvfilename = time.strftime("%Y%m%d-%H%M%S",time.gmtime())
+
+gpsd = None #setting the global variable
 
 os.system('clear') #clear the terminal (optional)
 
@@ -57,11 +62,11 @@ if __name__ == '__main__':
 			print 'sats        ' , gpsd.satellites
 
 			# Open csv file for writing GPS data
-			with open('gps-data.csv','a') as f:
+			with open(gps_data_dir + 'GPS_Log_' + csvfilename + '.csv','a') as f:
 				writer = csv.writer(f,quoting=csv.QUOTE_MINIMAL)
 				writer.writerow([gpsd.utc,gpsd.fix.latitude,gpsd.fix.longitude,gpsd.fix.altitude,gpsd.fix.speed,gpsd.fix.climb,gpsd.fix.track])
 				print 'Writing csv at ' , datetime.datetime.now().strftime("%H:%M:%S.%f")
-			time.sleep(5) #set to whatever
+			time.sleep(5) #set to whatever, 5 seconds in this case
 
 	except (KeyboardInterrupt, SystemExit): #when you press ctrl+c
 		print "\nKilling Thread..."
