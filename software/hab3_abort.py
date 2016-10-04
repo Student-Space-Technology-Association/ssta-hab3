@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 import sys
 
 # Pick a GPIO pin to connect to the transistor activating the cutdown device
-abort_pin = 4
+abort_pin = 17
 
 # Setup GPIO as output
 GPIO.setmode(GPIO.BCM)
