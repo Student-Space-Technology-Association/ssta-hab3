@@ -14,7 +14,7 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 
-imagedir = '/home/pi/hab3-camera_data'
+imagedir = '/home/pi/hab3-camera_data/'
 
 with picamera.PiCamera() as camera:
     camera.resolution = (2592,1944)
