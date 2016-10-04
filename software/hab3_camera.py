@@ -29,4 +29,4 @@ with picamera.PiCamera() as camera:
     
     for filename in camera.capture_continuous(imagedir + 'hab3_img{timestamp:%Y%m%d-%H%M%S}.jpg'):
         print('Captured %s' % filename)
-        time.sleep(300) # Wait 5 minutes
+        time.sleep(120) # Wait 2 minutes
