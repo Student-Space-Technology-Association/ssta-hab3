@@ -29,9 +29,7 @@ sps = 250       # 250 samples per second
 
 # Servo and buzzer setup
 GPIO.setmode(GPIO.BCM)
-servo_pin = 17
 buzzer_pin = 4
-GPIO.setup(servo_pin,GPIO.OUT)
 GPIO.setup(buzzer_pin,GPIO.OUT)
 GPIO.output(buzzer_pin,GPIO.LOW)
 
@@ -41,10 +39,6 @@ sense = SenseHat()
 BMP_sensor = BMP085.BMP085()
 adc = ADS1x15(ic=ADS1015)
 pwm = GPIO.PWM(servo_pin,50)
-
-# Finish servo setup
-servo_start = 3.5   # percent duty cycle for initial servo position
-servo_smoke = 7.5   # servo position to activate smoke
 
 # Set data output directory
 data_dir='/home/pi/hab3_sensor_data/'
@@ -74,9 +68,6 @@ altitude_limit = 3048 # meters
 BMP_alt = 0 # initialize
 finding_activated = 0
 activated = 0
-
-# Set smoke grenade servo to initial position
-pwm.start(servo_start)
 
 # Set a reference time at startup for calculating sleep duration in main loop
 ref_time = time.time()
@@ -168,8 +159,6 @@ while True:
             if finding_activated < 1:
                 GPIO.output(buzzer_pin,GPIO.HIGH)
                 print 'Buzzer has been activated.'
-                pwm.ChangeDutyCycle(servo_smoke)
-                print 'Smoke grenade has been activated.'
                 activated = 1
 
 
