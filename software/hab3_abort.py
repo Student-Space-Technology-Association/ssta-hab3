@@ -4,6 +4,7 @@
 # in accordance with FAA requirements.
 
 import RPi.GPIO as GPIO
+import time
 import sys
 
 # Pick a GPIO pin to connect to the transistor activating the cutdown device
